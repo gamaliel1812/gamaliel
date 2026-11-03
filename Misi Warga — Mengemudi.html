@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="theme-color" content="#17324d"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bermasyarakat — Soal & Petualangan</title>
+<style>
+:root{color-scheme:light;--ink:#19344d;--blue:#2878b8;--pale:#edf6ff;--green:#16845b;--gold:#f2b544;--red:#c64e58}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#e8f5ff,#fff7e8)}
+header{text-align:center;padding:23px 14px 27px;background:linear-gradient(120deg,#17324d,#28789b);color:white}
+header .logo{font-size:42px}header h1{margin:5px 0;font-size:clamp(26px,5vw,39px)}header p{margin:7px 0 0;color:#dceefa}
+main{max-width:960px;margin:22px auto;padding:0 14px 30px}.panel{background:white;border-radius:20px;padding:21px;box-shadow:0 9px 28px #18344c17;margin-bottom:17px}
+h2{margin:0 0 9px}.muted{color:#62768a;line-height:1.5}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0}
+.tile{border:2px solid #dce8f1;background:#fff;border-radius:16px;padding:15px;text-align:left;cursor:pointer;min-height:135px;transition:.16s}
+.tile:hover{transform:translateY(-3px);border-color:var(--blue);background:#f7fbff}.tile.sel{border-color:var(--blue);background:var(--pale)}
+.tile .emoji{font-size:30px}.tile b{display:block;margin:7px 0;font-size:17px}.tile small{color:#63778a;line-height:1.4}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.pill{background:#edf4fa;border-radius:30px;padding:8px 12px;font-weight:bold;font-size:14px}
+.btn{border:0;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:bold;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#eaf1f7;color:var(--ink)}.primary:disabled{opacity:.45;cursor:not-allowed}
+.level{border:2px solid #dce8f1;background:white;border-radius:12px;padding:9px 14px;font-weight:bold;cursor:pointer}.level.active{border-color:var(--blue);background:var(--pale);color:var(--blue)}
+.hidden{display:none!important}.center{text-align:center}
+#progress{height:10px;background:#e6edf3;border-radius:20px;overflow:hidden;flex:1;min-width:90px}#bar{height:100%;background:var(--green);width:0;transition:.25s}
+#timer{font-variant-numeric:tabular-nums}#scenario{background:#fff8e9;border-left:4px solid var(--gold);padding:12px 14px;border-radius:10px;line-height:1.5;margin:14px 0}
+#prompt{font-size:clamp(18px,3vw,22px);font-weight:bold;line-height:1.45;margin:17px 0}
+.answers{display:grid;gap:10px}.answer{border:2px solid #dce6ef;border-radius:13px;background:white;text-align:left;padding:13px;font-size:15px;line-height:1.4;cursor:pointer}.answer:hover{border-color:var(--blue);background:#f5faff}.answer:disabled{opacity:1;cursor:default}.answer.good{border-color:var(--green);background:#eaf8f0}.answer.bad{border-color:var(--red);background:#fff0f0}
+#feedback{min-height:52px;margin:14px 0;line-height:1.5;font-weight:bold}
+.big{font-size:40px;font-weight:800;color:var(--green)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.stat{background:#eef5fa;padding:12px;border-radius:12px}.stat b{display:block;font-size:22px;margin-top:4px}
+.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}.spot{padding:15px 8px;border:2px solid #dce8f1;border-radius:14px;background:#f9fcff;text-align:center}.spot button{margin-top:8px}
+input{width:min(100%,350px);padding:13px;border:2px solid #dce6ef;border-radius:11px;font-size:17px}
+footer{text-align:center;padding:0 14px 24px;color:#63778a;font-size:13px}
+@media(max-width:540px){.panel{padding:16px}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:span 2}.mapgrid{grid-template-columns:1fr}}
+.box{background:#fff8e9;border-left:4px solid var(--gold);padding:12px 14px;border-radius:10px;line-height:1.5;margin:14px 0}.btn:disabled{opacity:.5}.answer:active,.btn:active{transform:scale(.97)}#stage{animation:pop .3s}@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.tile,.answer,.level{color:var(--ink)}#wrap{position:relative;max-width:400px;margin:10px auto;touch-action:none;user-select:none;-webkit-user-select:none}#cv{width:100%;display:block;border-radius:16px;touch-action:none}#joy{position:absolute;left:12px;bottom:14px;width:110px;height:110px;border-radius:50%;background:#ffffff55;border:2px solid #fff9;touch-action:none}#knob{position:absolute;left:35px;top:35px;width:40px;height:40px;border-radius:50%;background:#fffe;box-shadow:0 2px 6px #0005}#jump{position:absolute;right:14px;bottom:24px;width:84px;height:84px;border-radius:50%;border:3px solid #fff;background:#f2b544;font-weight:bold;font-size:12px;color:#19344d;touch-action:none}#msg{position:absolute;left:0;right:0;top:8px;text-align:center;color:#fff;font-weight:bold;text-shadow:0 2px 4px #000;padding:0 10px;pointer-events:none;font-size:14px}#big{position:absolute;left:0;right:0;top:35%;text-align:center;color:#fff;font:900 52px Arial;text-shadow:0 3px 8px #000;pointer-events:none}
+#wheel{position:absolute;left:8px;bottom:6px;width:104px;height:104px;border-radius:50%;touch-action:none}#wheel svg{width:100%;height:100%;pointer-events:none}#brk,#gas{position:absolute;bottom:16px;border:2px solid #777;border-radius:12px;background:repeating-linear-gradient(0deg,#2a2a30 0 6px,#383840 6px 8px);color:#ddd;font:bold 12px Arial;touch-action:none;user-select:none;-webkit-user-select:none}#brk{right:84px;width:58px;height:62px;border-color:#e0504f}#gas{right:12px;width:64px;height:92px;border-color:#43c47a}#brk.on,#gas.on{filter:brightness(1.7);transform:scale(.95)}#msg{background:#fff;color:#19344d;text-shadow:none;border-radius:12px;margin:0 8px;padding:9px 11px;text-align:left;font-size:13px;line-height:1.45;box-shadow:0 3px 12px #0004}#msg:empty{display:none}
+#adventure{position:relative;margin:0 auto 17px;padding:0;border-radius:14px;background:#000;overflow:hidden}#wrap{--u:1;position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;margin:0}#cv{height:100%;border-radius:0}
+#hud{position:absolute;top:calc(var(--u)*8px);left:calc(var(--u)*8px);display:flex;flex-direction:column;gap:calc(var(--u)*5px);z-index:3;pointer-events:none}#hud .pill{font-size:calc(var(--u)*14px);padding:calc(var(--u)*4px) calc(var(--u)*10px);background:#fffe}
+#exit{position:absolute;top:calc(var(--u)*8px);right:calc(var(--u)*8px);width:calc(var(--u)*42px);height:calc(var(--u)*42px);border-radius:50%;border:2px solid #fff;background:#0009;color:#fff;font-size:calc(var(--u)*18px);z-index:3}
+#wheel{left:calc(var(--u)*14px);bottom:calc(var(--u)*6px);width:calc(var(--u)*175px);height:calc(var(--u)*175px)}
+#brk,#gas{bottom:calc(var(--u)*20px);font-size:calc(var(--u)*16px)}#brk{right:calc(var(--u)*125px);width:calc(var(--u)*88px);height:calc(var(--u)*92px)}#gas{right:calc(var(--u)*20px);width:calc(var(--u)*94px);height:calc(var(--u)*135px)}
+#msg{left:calc(var(--u)*140px);right:auto;width:calc(var(--u)*500px);margin:0;top:calc(var(--u)*8px);padding:calc(var(--u)*8px) calc(var(--u)*12px);font-size:calc(var(--u)*15px);border-radius:calc(var(--u)*12px)}#big{font-size:calc(var(--u)*58px);top:34%}
+</style></head>
+<body>
+<header><div class="logo">🏘️🧩🎮</div><h1>BERMASYARAKAT</h1><p>Pilih tantanganmu, pecahkan teka-teki, jadilah warga teladan!</p></header>
+<main>
+<section class="panel" id="home">
+ <h2>🎯 Pilih Mode Permainan</h2>
+ <p class="muted">Kamu bisa mengerjakan soal pilihan ganda atau menjalankan petualangan interaktif. Setiap misi mengangkat kehidupan bermasyarakat.</p>
+ <div class="grid">
+  <button class="tile" onclick="chooseMode('quiz')"><span class="emoji">📝</span><b>Mode Soal</b><small>30 detik per soal, pilih jawaban, kumpulkan poin, dan pecahkan soal teka-teki.</small></button>
+  <button class="tile" onclick="chooseMode('adventure')"><span class="emoji">🚗</span><b>Mode Mengemudi</b><small>Setir sendiri mobilmu! Injak GAS dan REM, lalu arahkan ke jalur kiri, tengah, atau kanan sesuai jawaban benar.</small></button>
+ </div>
+ <div id="settings" class="hidden">
+  <h2 id="modeTitle">Pilih topik</h2><p class="muted" id="modeDesc"></p>
+  <div class="grid" id="topics"></div>
+  <div class="row"><b>Kesulitan:</b>
+   <button class="level active" onclick="setLevel('mudah',this)">🌱 Mudah</button>
+   <button class="level" onclick="setLevel('sedang',this)">🔥 Sedang</button>
+   <button class="level" onclick="setLevel('sulit',this)">🏆 Sulit</button>
+  </div>
+  <p style="margin-top:17px"><button class="btn primary" id="launch" onclick="launch()" disabled>Mulai Misi →</button></p>
+ </div>
+</section>
+
+<section class="panel hidden" id="play">
+ <div class="row"><span class="pill" id="topicName">Misi</span><span class="pill">⭐ <span id="score">0</span></span><span class="pill">🔥 <span id="streak">0</span></span></div>
+ <div class="row" style="margin-top:14px"><b id="counter">1/5</b><div id="progress"><div id="bar"></div></div><span class="pill">⏳ <span id="timer">30</span> detik</span></div>
+ <div id="scenario"></div><div id="prompt"></div>
+ <div class="answers" id="answers"></div>
+ <div id="feedback" aria-live="polite"></div>
+ <button class="btn primary" id="next" onclick="advance()" disabled>Lanjut →</button>
+ <button class="btn secondary" onclick="toHome()">Keluar</button>
+</section>
+
+<section class="panel hidden" id="adventure"><div id="wrap"><canvas id="cv" width="800" height="400"></canvas><div id="hud"><span class="pill" id="hRank">🏁</span><span class="pill">✅ <span id="hCoin">0</span></span><span class="pill">⏱️ <span id="hTime">80</span></span></div><button id="exit" onclick="toHome()">✕</button><div id="msg"></div><div id="big"></div><div id="wheel"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#222" stroke-width="11"/><circle cx="50" cy="50" r="46.5" fill="none" stroke="#666" stroke-width="1.5"/><path d="M8 50H92M50 50V92" stroke="#222" stroke-width="9"/><circle cx="50" cy="50" r="13" fill="#444" stroke="#111" stroke-width="3"/><rect x="46" y="1" width="8" height="12" fill="#e0504f"/></svg></div><button id="brk">REM</button><button id="gas">GAS</button></div></section>
+
+<section class="panel hidden center" id="result">
+ <div style="font-size:50px" id="medal">🏆</div><h2 id="resultTitle">Misi Selesai!</h2><div class="big"><span id="finalScore">0</span> poin</div>
+ <p class="muted" id="resultText"></p><div class="stats"><div class="stat">Benar<b id="rightCount">0</b></div><div class="stat">Akurasi<b id="accuracy">0%</b></div><div class="stat">Streak terbaik<b id="best">0</b></div></div>
+ <button class="btn primary" onclick="replay()">Main lagi</button> <button class="btn secondary" onclick="toHome()">Pilih mode lain</button>
+</section>
+</main><footer>Game edukasi tentang gotong royong, toleransi, musyawarah, lingkungan, dan tanggung jawab.</footer>
+<script>
+const topics={
+ gotong:{name:"Gotong Royong",emoji:"🧹",desc:"Kerja sama dan saling membantu.",qs:[
+ ["Warga kerja bakti membersihkan taman. Apa tindakan terbaik?",["Ikut membantu sesuai kemampuan","Menonton saja","Mengotori taman","Pulang tanpa kabar"],0,"Gotong royong meringankan pekerjaan dan mempererat hubungan warga."],
+ ["Kamu selesai lebih dahulu saat kerja bakti. Apa yang sebaiknya dilakukan?",["Langsung pulang","Membantu warga lain yang belum selesai","Menyembunyikan alat","Mengganggu teman"],1,"Membantu orang lain menunjukkan kepedulian."],
+ ["Dua kelompok berbeda pendapat tentang pembagian tugas. Solusi terbaik?",["Membatalkan kegiatan","Membiarkan bertengkar","Ketua memaksa pilihannya","Membagi tugas melalui diskusi yang adil"],3,"Musyawarah membuat pembagian tugas lebih adil."],
+ ["Seorang warga sakit sehingga tidak dapat ikut kerja bakti. Sikap yang tepat?",["Mengejeknya","Memaksanya hadir","Memahami kondisinya dan membagi ulang tugas","Mengucilkannya"],2,"Gotong royong juga membutuhkan empati."],
+ ["TEKA-TEKI: Aku dilakukan bersama, membuat pekerjaan berat terasa ringan. Apakah aku?",["Persaingan","Gotong royong","Hukuman","Perdebatan"],1,"Jawabannya gotong royong: bekerja bersama untuk kepentingan bersama."]
+ ]},
+ toleransi:{name:"Toleransi",emoji:"🕊️",desc:"Menghormati perbedaan dan menjaga kerukunan.",qs:[
+ ["Tetangga sedang beribadah. Apa sikap tepat?",["Mengganggu","Memutar musik keras","Menjaga ketenangan","Mengejek"],2,"Menghormati ibadah orang lain adalah bentuk toleransi."],
+ ["Teman memiliki logat daerah berbeda. Kamu sebaiknya ...",["Mengejek logatnya","Mengajaknya berkenalan","Mengucilkannya","Menghindarinya"],1,"Perbedaan daerah bukan alasan untuk membeda-bedakan."],
+ ["Dalam diskusi, teman berbeda pendapat. Apa yang kamu lakukan?",["Mendengarkan dan menghargai","Memarahinya","Memotong pembicaraan","Memaksanya setuju"],0,"Menghargai pendapat menjaga suasana rukun."],
+ ["TEKA-TEKI: Aku bukan berarti semua orang harus sama. Aku mengajarkan menghargai perbedaan. Apakah aku?",["Persaingan","Keseragaman","Keegoisan","Toleransi"],3,"Toleransi adalah sikap menghormati perbedaan."],
+ ["Komentar menghina kelompok tertentu muncul di grup warga. Tindakan bijak?",["Ikut menghina","Menyebarkan","Tidak ikut menyebar dan mengingatkan dengan sopan","Membuat ejekan baru"],2,"Sikap santun dapat mencegah konflik."]
+ ]},
+ musyawarah:{name:"Musyawarah",emoji:"🗣️",desc:"Mengambil keputusan bersama.",qs:[
+ ["Warga menentukan jadwal ronda. Cara terbaik?",["Ketua menentukan sendiri","Bermusyawarah","Mengikuti yang paling keras","Tidak membuat jadwal"],1,"Musyawarah memberi kesempatan menyampaikan pendapat."],
+ ["Saat rapat, orang lain sedang berbicara. Kamu sebaiknya ...",["Memotong","Berteriak","Mendengarkan sampai selesai","Pergi"],2,"Mendengarkan adalah bagian penting musyawarah."],
+ ["Hasil musyawarah telah disepakati. Sikap tepat?",["Menghormati dan melaksanakan","Menghina hasilnya","Mengajak melanggar","Tidak peduli"],0,"Keputusan bersama harus dihormati."],
+ ["TEKA-TEKI: Aku mempertemukan banyak pendapat untuk mencari keputusan bersama. Apakah aku?",["Perkelahian","Perlombaan","Paksaan","Musyawarah"],3,"Musyawarah mencari kesepakatan bersama."],
+ ["Keputusan rapat ternyata berdasarkan informasi keliru. Apa yang harus dilakukan?",["Menyembunyikannya","Meluruskan informasi dan meninjau keputusan","Tetap memakai informasi salah","Menyalahkan peserta"],1,"Keputusan harus berdasarkan informasi yang benar."]
+ ]},
+ lingkungan:{name:"Peduli Lingkungan",emoji:"🌳",desc:"Menjaga kebersihan dan fasilitas umum.",qs:[
+ ["Melihat sampah di taman, kamu sebaiknya ...",["Membiarkan","Menendang ke jalan","Memungut dan membuang dengan benar","Menambah sampah"],2,"Kebersihan dimulai dari tindakan sederhana."],
+ ["Keran fasilitas umum menyala tanpa digunakan. Apa tindakanmu?",["Menutupnya jika aman","Membiarkan","Merusaknya","Mengabaikan"],0,"Menghemat air adalah tanggung jawab bersama."],
+ ["Selokan tersumbat dan air menggenang. Apa tindakan tepat?",["Menunggu parah","Membuang sampah lagi","Menyalahkan tetangga","Melapor dan mengajak warga menangani dengan aman"],3,"Masalah lingkungan perlu ditangani bersama."],
+ ["TEKA-TEKI: Aku tempat sampah dipisahkan menurut jenisnya agar mudah diolah kembali. Kegiatan apakah aku?",["Pemborosan","Pemilahan sampah","Pencemaran","Pembakaran"],1,"Pemilahan sampah membantu proses pengolahan dan daur ulang."],
+ ["Program kebersihan tidak berjalan karena tugas tidak jelas. Solusi terbaik?",["Membatalkan selamanya","Menyalahkan warga","Membuat jadwal, pembagian tugas, dan evaluasi","Tidak perlu rencana"],2,"Program membutuhkan rencana dan tanggung jawab."]
+ ]},
+ tanggung:{name:"Tanggung Jawab Warga",emoji:"🛡️",desc:"Menepati kesepakatan dan menjaga keamanan.",qs:[
+ ["Menemukan dompet di taman. Apa yang kamu lakukan?",["Mengambil uangnya","Membuangnya","Menyimpan diam-diam","Menyerahkan kepada pengurus atau mencari pemilik"],3,"Kejujuran berarti berusaha mengembalikan barang temuan."],
+ ["Kamu mendapat tugas kegiatan warga. Sikap tepat?",["Melaksanakan atau memberi kabar jika berhalangan","Mengabaikan","Berpura-pura lupa","Menyuruh orang tanpa izin"],0,"Tanggung jawab berarti menjalankan kewajiban."],
+ ["Lampu jalan lingkungan mati. Apa yang tepat?",["Membongkar instalasi sendiri","Melapor kepada pengurus atau petugas","Membiarkannya","Menyalahkan tetangga"],1,"Masalah fasilitas dilaporkan kepada pihak yang berwenang."],
+ ["TEKA-TEKI: Aku dilakukan saat seseorang menepati janji dan menyelesaikan kewajibannya. Apakah aku?",["Kecerobohan","Keegoisan","Tanggung jawab","Persaingan"],2,"Tanggung jawab berarti melaksanakan kewajiban."],
+ ["Ada kabar mencurigakan di grup warga tanpa bukti. Apa tindakan bijak?",["Langsung menyebar","Menambah cerita","Menuduh orang","Memeriksa kebenaran sebelum membagikan"],3,"Periksa informasi agar tidak menimbulkan kepanikan."]
+ ]}
+};
+let mode="",topic="",level="mudah",idx=0,score=0,right=0,streak=0,best=0,locked=false,timer=null,seconds=30,activePool=[];
+const $=id=>document.getElementById(id);
+function chooseMode(m){mode=m;topic="";$("launch").disabled=true;document.querySelectorAll("#topics .tile").forEach(x=>x.classList.remove("sel"));$("settings").classList.remove("hidden");$("modeTitle").textContent=m==="quiz"?"📝 Pilih Topik Soal":"🚗 Mengemudi Warga";$("modeDesc").textContent=m==="quiz"?"Pilih materi dan jawab 5 soal. Setiap soal memiliki batas waktu 30 detik.":"Putar setir di kiri bawah, tekan GAS dan REM di kanan bawah. Di tiap gerbang soal, masuk jalur KIRI, TENGAH, atau KANAN yang jawabannya benar. Selesaikan sebelum waktu habis!";renderTopics();if(m==="adventure"){$("topics").classList.add("hidden");topic="adv";$("launch").disabled=false}else $("topics").classList.remove("hidden");setTimeout(()=>$("settings").scrollIntoView({behavior:"smooth",block:"start"}),100)}
+function renderTopics(){let el=$("topics");el.innerHTML="";Object.entries(topics).forEach(([k,v])=>{let b=document.createElement("button");b.className="tile";b.innerHTML=`<span class="emoji">${v.emoji}</span><b>${v.name}</b><small>${v.desc}</small>`;b.onclick=()=>{topic=k;document.querySelectorAll("#topics .tile").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");$("launch").disabled=false;setTimeout(()=>$("launch").scrollIntoView({behavior:"smooth",block:"center"}),80)};el.appendChild(b)})}
+function setLevel(l,b){level=l;document.querySelectorAll(".level").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+function launch(){if(!topic)return;if(mode==="quiz")startQuiz();else startAdventure()}
+function initScore() {score=0;right=0;streak=0;best=0}
+function startQuiz(){[["rightCount","Benar"],["accuracy","Akurasi"],["best","Streak terbaik"]].forEach(([i,t])=>$(i).parentNode.firstChild.textContent=t);initScore();idx=0;activePool=topics[topic].qs.slice().sort(()=>Math.random()-.5);$("home").classList.add("hidden");$("play").classList.remove("hidden");$("topicName").textContent=topics[topic].emoji+" "+topics[topic].name;showQuiz()}
+function showQuiz(){locked=false;clearInterval(timer);seconds=30;let q=activePool[idx];$("counter").textContent=(idx+1)+"/5";$("bar").style.width=(idx/5*100)+"%";$("timer").textContent=seconds;$("score").textContent=score;$("streak").textContent=streak;$("scenario").textContent="📍 Tantangan: "+(q[0].startsWith("TEKA-TEKI")?"Pecahkan teka-teki berikut!":"Pilih tindakan paling tepat dalam kehidupan bermasyarakat.");$("prompt").textContent=q[0];$("feedback").textContent="Waktu menjawab: 30 detik.";let area=$("answers");area.innerHTML="";let order=q[1].map((_,i)=>i).sort(()=>Math.random()-.5);order.forEach((n,i)=>{let b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+i)+". "+q[1][n];b.onclick=()=>answerQuiz(n,b);area.appendChild(b)});$("next").disabled=true;$("next").textContent=idx===4?"Lihat Hasil 🏁":"Soal Berikutnya →";timer=setInterval(()=>{seconds--;$("timer").textContent=seconds;if(seconds<=0)answerQuiz(-1,null)},1000)}
+function answerQuiz(n,btn){if(locked)return;locked=true;clearInterval(timer);let q=activePool[idx];document.querySelectorAll("#answers .answer").forEach(b=>{b.disabled=true;if(b.textContent.endsWith(q[1][q[2]]))b.classList.add("good")});if(n===q[2]){let base=level==="mudah"?10:level==="sedang"?15:20;let bonus=Math.floor(seconds/5)*2;streak++;best=Math.max(best,streak);let combo=streak>=3?5:0;score+=base+bonus+combo;right++;$("feedback").textContent="✅ Benar! +"+(base+bonus+combo)+" poin. "+q[3]}else{streak=0;if(btn)btn.classList.add("bad");$("feedback").textContent=(n===-1?"⏰ Waktu habis. ":"❌ Belum tepat. ")+q[3]}$("score").textContent=score;$("streak").textContent=streak;$("bar").style.width=((idx+1)/5*100)+"%";$("next").disabled=false}
+function advance(){if(!locked)return;if(idx<4){idx++;showQuiz()}else showResult()}
+function showResult(){clearInterval(timer);$("play").classList.add("hidden");$("result").classList.remove("hidden");let acc=Math.round(right/5*100);$("finalScore").textContent=score;$("rightCount").textContent=right+"/5";$("accuracy").textContent=acc+"%";$("best").textContent=best;$("medal").textContent=acc>=80?"🏆":acc>=60?"🥈":"🌱";$("resultTitle").textContent=acc>=80?"Warga Teladan!":acc>=60?"Warga Peduli!":"Terus Berlatih!";$("resultText").textContent="Kamu menyelesaikan mode soal "+topics[topic].name+". "+(acc>=80?"Hebat, pemahamanmu sangat baik!":"Pelajari pembahasan dan coba lagi untuk meningkatkan skor.")}
+
+// Adventure: choose three locations; each location is a mini decision puzzle.
+const L=3600,N=1,COL=["#2a7de1","#e84a5f","#2a9d8f","#f4a261","#6a4c93","#e76f51","#43aa8b","#c9a227"],EM=["😀","😎","🥳","🤠","🤖","🐱","🐸","🦊"];let Q=4;
+const GB=[["Warga kerja bakti. Tindakan terbaik?",["Ikut membantu","Menonton saja","Pulang"]],["Tetangga sedang beribadah. Sikapmu?",["Jaga ketenangan","Musik keras","Mengejek"]],["Hasil musyawarah sudah disepakati. Sikap tepat?",["Menghormati","Menghina hasil","Tidak peduli"]],["Melihat sampah di taman, kamu ...",["Memungut & buang","Membiarkan","Menendangnya"]],["Kabar tanpa bukti di grup warga. Tindakanmu?",["Periksa dulu","Langsung sebar","Menuduh orang"]],["Teman berbeda pendapat. Kamu ...",["Mendengarkan","Memarahinya","Memaksanya"]],["Lampu jalan lingkungan mati. Tindakan tepat?",["Lapor pengurus","Membiarkan","Bongkar sendiri"]],["Menemukan dompet di taman. Kamu ...",["Cari pemiliknya","Ambil uangnya","Menyimpan"]],["Selokan tersumbat, air menggenang. Tindakanmu?",["Lapor & bersihkan","Menunggu","Buang sampah lagi"]],["Ada teman baru beda daerah. Sikapmu?",["Berkenalan","Mengejek logat","Mengucilkan"]],["Saat rapat, orang lain sedang bicara. Kamu ...",["Mendengarkan","Memotong","Berteriak"]],["Tetangga sakit, tak bisa ikut kerja bakti. Sikapmu?",["Memahami","Mengejeknya","Memaksa hadir"]],["Keputusan rapat berdasar info keliru. Tindakanmu?",["Luruskan info","Menyembunyikan","Menyalahkan"]],["Jadwal ronda berubah mendadak. Kamu ...",["Atur pengganti","Tidak datang","Salahkan orang"]],["Kamu selesai kerja bakti lebih dulu. Kamu ...",["Bantu yang lain","Langsung pulang","Mengganggu"]]];
+const FIN=11200,VM=4.2,HY=115,YB=300,GZ=[1200,2200,3200,4200,5200,6200,7200,8200,9200,10200];
+const CF={mudah:{t:120,pen:2,tr:430,cv:.7},sedang:{t:100,pen:3,tr:300,cv:1},sulit:{t:85,pen:5,tr:210,cv:1.4}};
+let G=null,raf=0,keys={},last=0,acc=0,wa=0,wid=null,gasP=0,brkP=0,a0=0,w0=0;
+const cv=$("cv"),cx=cv.getContext("2d"),wh=$("wheel");
+function stopGame(){cancelAnimationFrame(raf);G=null;gasP=brkP=0;exitFS()}
+function rnd(a,b){return a+Math.random()*(b-a)}
+function X(z,k){return k*(70*Math.sin(z/600)+40*Math.sin(z/230))}
+function dX(z,k){return k*(70/600*Math.cos(z/600)+40/230*Math.cos(z/230))}
+function startAdventure(){initScore();stopGame();$("home").classList.add("hidden");$("result").classList.add("hidden");$("adventure").classList.remove("hidden");fit();enterFS();$("big").textContent="";$("msg").innerHTML="";let c=CF[level];
+let qs=GB.slice().sort(()=>Math.random()-.5).slice(0,10),gates=GZ.map((z,i)=>{let o=qs[i][1].map((t,k)=>[t,k]).sort(()=>Math.random()-.5);return{z,q:qs[i][0],o:o.map(a=>a[0]),c:o.findIndex(a=>a[1]===0),done:0}});
+let tr=[];for(let z=700;z<FIN-300;z+=c.tr*rnd(.7,1.3)){if(gates.some(g=>Math.abs(g.z-z)<260))continue;tr.push({z,l:Math.floor(rnd(-1,2)),v:rnd(1.1,2.2),col:["#2a7de1","#e84a5f","#2a9d8f","#f4c430","#6a4c93","#e8e8e8"][Math.floor(rnd(0,6))],hit:0})}
+G={c,gates,tr,pos:0,v:0,x:0,t:c.t,cd:3.4,ok:0,sh:0,end:0,fin:0,fb:0,k:c.cv,qid:-1};wa=0;last=0;acc=0;raf=requestAnimationFrame(loop)}
+function toast(s,n){$("big").textContent=s;G.fb=n}
+function step(){let g=G;if(g.cd>0){g.cd-=1/60;$("big").textContent=g.cd>.4?Math.ceil(g.cd-.4):"GO!";if(g.cd<=0)$("big").textContent="";return}
+if(g.end){g.end--;g.v=Math.max(0,g.v-.05);if(g.end===0)endRace(g.fin);return}
+if(g.sh>0)g.sh--;if(g.fb>0&&--g.fb===0)$("big").textContent="";g.t-=1/60;
+let gas=gasP||keys.ArrowUp||keys.w,br=brkP||keys.ArrowDown||keys.s;
+if(!wid){let tg=(keys.ArrowLeft||keys.a?-1:0)+(keys.ArrowRight||keys.d?1:0);wa+=(tg*80-wa)*.2;wh.style.transform="rotate("+wa+"deg)"}
+let off=Math.abs(g.x)>1.6;if(gas)g.v+=.045;else g.v-=.012;if(br)g.v-=.12;g.v=Math.max(0,Math.min(g.v,off?1.6:VM));
+let s=g.v/VM,run=g.v>.05?1:0;g.x+=wa/110*(.012+.03*s)*run-dX(g.pos,g.k)*g.v*.0065;g.x=Math.max(-2.4,Math.min(2.4,g.x));g.pos+=g.v;
+g.tr.forEach(o=>{o.z+=o.v;if(!o.hit&&Math.abs(o.z-g.pos)<12&&Math.abs(o.l-g.x)<.55){o.hit=1;g.v*=.25;g.sh=16;g.t-=1.5;toast("💥 Tabrakan! −1,5 dtk",45)}});
+g.gates.forEach(q=>{if(!q.done&&g.pos>=q.z){q.done=1;let l=Math.max(-1,Math.min(1,Math.round(g.x)));if(l+1===q.c){g.ok++;toast("✅ Benar!",55)}else{g.t-=g.c.pen;g.v*=.4;g.sh=16;toast("❌ Salah! −"+g.c.pen+" dtk",65)}}});
+if(g.pos>=FIN){g.fin=1;g.end=80}else if(g.t<=0){g.end=40}}
+function endRace(q){let g=G;$("big").textContent=q?"🏁 FINISH!":"⏰ Waktu habis!";cancelAnimationFrame(raf);setTimeout(()=>{if(G===g)finishAdventure(Math.max(0,Math.round(g.t)),g.ok,q)},1300)}
+function loop(ts){raf=requestAnimationFrame(loop);if(!G)return;if(!last)last=ts;acc+=Math.min(50,ts-last);last=ts;while(acc>=16.7){acc-=16.7;if(G)step()}if(G)draw()}
+function fit(){let a=$("adventure"),w=$("wrap"),cw=Math.max(300,a.parentNode.clientWidth-28),sw=screen.width,sh=screen.height,ot=screen.orientation&&screen.orientation.type,por=typeof ot==="string"?ot.indexOf("portrait")===0:(sh>sw),ww=por?Math.max(300,Math.min(2*cw,sh-190)):Math.min(cw,Math.max(300,(sh-100)*2));if(!(ww>0))ww=Math.min(cw,640);a.style.width=(por?ww/2:ww)+"px";a.style.height=(por?ww:ww/2)+"px";w.style.width=ww+"px";w.style.height=ww/2+"px";w.style.transform=por?"translateX("+ww/2+"px) rotate(90deg)":"none";w.style.setProperty("--u",ww/800)}
+addEventListener("resize",()=>{if(G)fit()});addEventListener("orientationchange",()=>setTimeout(()=>{if(G)fit()},200));
+function enterFS(){setTimeout(()=>{try{$("adventure").scrollIntoView({block:"center"})}catch(e){}},60)}
+function exitFS(){}
+function P(t){let g=G,z=g.pos+30/t,half=14+t*340,lw=half/1.5;return{z,half,lw,c:400-g.x*lw+(X(z,g.k)-X(g.pos,g.k))*2.2*Math.pow(1-t,1.5)}}
+function draw(){let g=G,pos=g.pos,sh=g.sh>0?rnd(-4,4):0;cx.save();cx.translate(sh,sh);
+let gr=cx.createLinearGradient(0,0,0,HY);gr.addColorStop(0,"#8fbde6");gr.addColorStop(1,"#e8f1f8");cx.fillStyle=gr;cx.fillRect(-9,-9,820,HY+9);
+cx.fillStyle="#9aa5b1";for(let i=0;i<32;i++)cx.fillRect(i*27-5,HY-22-(i*37)%38,23,70);
+for(let y=HY+1;y<YB;y+=2){let t=(y-HY)/(YB-HY),p=P(t);cx.fillStyle="#7d8087";cx.fillRect(-9,y,820,2);cx.fillStyle=Math.floor(p.z/40)%2?"#3a3c41":"#43454b";cx.fillRect(p.c-p.half,y,p.half*2,2);cx.fillStyle="#e6b800";let ew=Math.max(1,6*t);cx.fillRect(p.c-p.half,y,ew,2);cx.fillRect(p.c+p.half-ew,y,ew,2);if(Math.floor(p.z/30)%2===0){cx.fillStyle="#eee";let dw=Math.max(1,5*t);cx.fillRect(p.c-.5*p.lw-dw/2,y,dw,2);cx.fillRect(p.c+.5*p.lw-dw/2,y,dw,2)}}
+let base=Math.floor(pos/60);for(let i=26;i>=1;i--){let z=(base+i)*60,t=30/(z-pos);if(t>1||t<.02)continue;let p=P(t),y=HY+t*(YB-HY);for(let sd=-1;sd<=1;sd+=2){let k=(z/60+(sd>0?2:0)),hh=(120+(k%7)*45)*t*2.2,bw=480*t,x0=sd<0?p.c-p.half-bw-6*t:p.c+p.half+6*t;cx.fillStyle=["#8a8f97","#a39a8c","#6f7882","#b0a79a"][k%4];cx.fillRect(x0,y-hh,bw,hh);cx.fillStyle="#4a5560aa";let st=Math.max(5,34*t);for(let wy=y-hh+8*t;wy<y-10*t;wy+=st)for(let wx=x0+8*t;wx<x0+bw-10*t;wx+=st)cx.fillRect(wx,wy,15*t,20*t)}}
+let ob=[];g.gates.forEach(q=>{if(!q.done)ob.push({z:q.z,q})});g.tr.forEach(o=>ob.push({z:o.z,o}));ob.filter(a=>a.z-pos>3&&a.z-pos<1500).sort((a,b)=>b.z-a.z).forEach(a=>{let t=30/(a.z-pos);if(t>1.2||t<.02)return;let p=P(t),y=HY+t*(YB-HY);
+if(a.q){a.q.o.forEach((tx,k)=>{let x=p.c+(k-1)*p.lw,bw=p.lw*.92,bh=70*t,py=y-34*t,top=py-bh*1.35;cx.fillStyle="#333";cx.fillRect(x-bw/2+3,top,4,py-top+34*t);cx.fillRect(x+bw/2-7,top,4,py-top+34*t);cx.fillStyle="#2457c5";cx.fillRect(x-bw/2,top,bw,bh*1.35);cx.strokeStyle="#fff";cx.lineWidth=Math.max(1,2*t);cx.strokeRect(x-bw/2,top,bw,bh*1.35);if(t>.1){cx.textAlign="center";cx.fillStyle="#ffe14d";cx.font="bold "+Math.max(7,13*t*1.5)+"px Arial";cx.fillText(["⬅ KIRI","⬆ TENGAH","KANAN ➡"][k],x,top+Math.max(9,16*t*1.3));cx.fillStyle="#fff";cx.font="bold "+Math.min(Math.max(7,22*t),bw/(tx.length*.6))+"px Arial";cx.fillText(tx,x,top+bh*1.1)}})}
+else{let o=a.o,x=p.c+o.l*p.lw,w=p.lw*.62,h=p.lw*.36;cx.fillStyle="#0005";cx.fillRect(x-w/2,y-3*t,w,6*t+1);cx.fillStyle=o.col;cx.fillRect(x-w/2,y-h,w,h);cx.fillStyle="#0004";cx.fillRect(x-w*.38,y-h*1.3,w*.76,h*.4);cx.fillStyle="#bfe6ff";cx.fillRect(x-w*.32,y-h*1.22,w*.64,h*.26);cx.fillStyle="#ff2a2a";cx.fillRect(x-w/2,y-h*.7,w*.18,h*.2);cx.fillRect(x+w/2-w*.18,y-h*.7,w*.18,h*.2)}});
+cx.fillStyle="#d9531e";cx.beginPath();cx.moveTo(110,318);cx.lineTo(260,262);cx.lineTo(540,262);cx.lineTo(690,318);cx.fill();cx.fillStyle="#ffffff22";cx.beginPath();cx.moveTo(285,268);cx.lineTo(515,268);cx.lineTo(600,300);cx.lineTo(200,300);cx.fill();
+cx.fillStyle="#17171b";cx.fillRect(-9,300,820,110);cx.fillStyle="#2b2b32";cx.fillRect(-9,300,820,6);
+let s=g.v/VM,a=(135+270*s)*Math.PI/180,sx=330,sy=352;cx.fillStyle="#0c0c0f";cx.strokeStyle="#777";cx.lineWidth=3;cx.beginPath();cx.arc(sx,sy,44,0,7);cx.fill();cx.stroke();cx.strokeStyle="#aaa";cx.lineWidth=2;for(let i=0;i<=6;i++){let b=(135+45*i)*Math.PI/180;cx.beginPath();cx.moveTo(sx+Math.cos(b)*37,sy+Math.sin(b)*37);cx.lineTo(sx+Math.cos(b)*42,sy+Math.sin(b)*42);cx.stroke()}
+cx.strokeStyle="#ff3b2f";cx.lineWidth=3;cx.beginPath();cx.moveTo(sx,sy);cx.lineTo(sx+Math.cos(a)*36,sy+Math.sin(a)*36);cx.stroke();cx.textAlign="center";cx.fillStyle="#ddd";cx.font="bold 12px Arial";cx.fillText(Math.round(s*120)+" km/h",sx,sy+26);
+let gx=470;cx.fillStyle="#0c0c0f";cx.strokeStyle="#777";cx.lineWidth=3;cx.beginPath();cx.arc(gx,sy,44,0,7);cx.fill();cx.stroke();cx.strokeStyle="#43c47a";cx.lineWidth=6;cx.beginPath();cx.arc(gx,sy,36,-Math.PI/2,-Math.PI/2+Math.min(1,pos/FIN)*Math.PI*2);cx.stroke();cx.fillStyle="#fff";cx.font="bold 18px Arial";cx.fillText(g.ok+"/10",gx,sy+2);cx.fillStyle="#9fb";cx.font="10px Arial";cx.fillText("BENAR",gx,sy+16);
+cx.fillStyle="#888";cx.font="bold 14px Arial";cx.fillText("P R N",388,326);cx.fillStyle="#43c47a";cx.fillText("D",430,326);
+cx.restore();
+let q=g.gates.find(q=>!q.done&&q.z-pos<1100),id=q?q.z:0;if(g.qid!==id){g.qid=id;$("msg").innerHTML=q?"<b>🚗 "+q.q+"</b><br>⬅ <b>Kiri:</b> "+q.o[0]+" &nbsp; ⬆ <b>Tengah:</b> "+q.o[1]+" &nbsp; ➡ <b>Kanan:</b> "+q.o[2]:""}
+$("hRank").textContent=(level==="sulit"?"🏆 ":level==="sedang"?"🔥 ":"🌱 ")+"📍"+Math.min(100,Math.round(pos/FIN*100))+"%";$("hCoin").textContent=g.ok+"/10";$("hTime").textContent=Math.max(0,Math.ceil(g.t))}
+function wang(e){let r=wh.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)*180/Math.PI}
+wh.onpointerdown=e=>{wid=e.pointerId;wh.setPointerCapture(wid);a0=wang(e);w0=wa};
+wh.onpointermove=e=>{if(e.pointerId!==wid)return;let d=wang(e)-a0;if(d>180)d-=360;if(d<-180)d+=360;wa=Math.max(-110,Math.min(110,w0+d));wh.style.transform="rotate("+wa+"deg)"};
+wh.onpointerup=wh.onpointercancel=()=>{wid=null};
+[["gas",v=>gasP=v],["brk",v=>brkP=v]].forEach(([id,f])=>{let b=$(id);b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);f(1);b.classList.add("on")};b.onpointerup=b.onpointercancel=()=>{f(0);b.classList.remove("on")}});
+addEventListener("keydown",e=>{keys[e.key]=1;if(G&&e.key.startsWith("Arrow"))e.preventDefault()});addEventListener("keyup",e=>keys[e.key]=0);
+function finishAdventure(left,ok,q){stopGame();$("adventure").classList.add("hidden");$("result").classList.remove("hidden");let st=q?(ok>=10?3:ok>=7?2:1):0,sc=Math.round((ok*30+(q?left*4+100:0))*(level==="sulit"?1.5:level==="sedang"?1.2:1));$("medal").textContent=q?(st===3?"🏆":"🏁"):"⏰";$("resultTitle").textContent=q?(st===3?"Pengemudi Teladan!":"Berhasil Finish!"):"Waktu Habis, Coba Lagi!";$("finalScore").textContent=sc;[["rightCount","Sisa Waktu",left+" dtk"],["accuracy","Jawaban Benar",ok+"/10"],["best","Bintang",st?"⭐".repeat(st):"—"]].forEach(([i,l,v])=>{$(i).textContent=v;$(i).parentNode.firstChild.textContent=l});$("resultText").textContent=q?"Kamu menyelesaikan perjalanan! Jawaban benar dan sisa waktu menentukan skor serta bintangmu.":"Garis finish belum tercapai. Injak gas, hindari mobil lain, dan arahkan mobil ke jalur jawaban yang benar!"}
+function replay(){ $("result").classList.add("hidden");$("home").classList.remove("hidden");$("settings").classList.remove("hidden");$("launch").disabled=false}
+function toHome(){clearInterval(timer);$("play").classList.add("hidden");$("adventure").classList.add("hidden");$("result").classList.add("hidden");$("home").classList.remove("hidden");$("settings").classList.add("hidden");mode="";topic="";stopGame()}
+</script></body></html>
